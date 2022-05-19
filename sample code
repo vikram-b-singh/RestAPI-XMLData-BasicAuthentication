@@ -1,0 +1,45 @@
+<script  runat="server">
+
+Platform.Load("core", "1.1.5");
+try{
+var url = 'https://sfmcxapi-test.us-w1.cloudhub.io/api/xxxxx';
+var contentType = 'application/xml';
+var username = '2a5f28366bf9430290xxxxxxxxxxa';
+var password = 'aFA0403e1Ca745E5B4xxxxxxxxb';
+var auth = 'Basic ' + Platform.Function.Base64Encode(username+':'+password);
+var header = 'Authorization: ' + auth;
+var payload = '<consumerLink xmlns="http://www.xtime.com/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xtime.com/v1 http://www.xtime.com/v1/consumerLink.xsd"> 
+              <dealer>     <store company="14043">61530</store> </dealer> <locale>en_US</locale> <hint>SERVICE</hint> <vehicle>   
+              <vin>JM3KFBCM1K0614129</vin> </vehicle> <appointment>     <recommendation mileage="72200"/> </appointment> <consumer>    
+              <info>         <firstName>SHARON</firstName>         <lastName>B BETTY</lastName>         <email>shabexyt201@popxmail.c</email>        
+              <mobilePhone>""</mobilePhone>     </info>     <labels>         <label purpose="APPT_LABEL" context="MINACSMNAO">RAN_APPTLABEL</label>       
+              <label purpose="REPORTING" context="MMABCAO">SREMAIL</label>     </labels> </consumer> </consumerLink>';
+  
+  
+var req = new Script.Util.HttpRequest(url);
+    req.emptyContentHandling = 0;
+    req.retries = 2;
+    req.continueOnError = true;
+    req.contentType = "application/xml"
+    req.method = "POST";
+    req.setHeader("Authorization", auth);
+    req.postData = payload;
+
+    var resp = req.send();
+    var resultStr = String(resp.content);
+    var resultJSON = Platform.Function.ParseJSON(resultStr);
+  var x = resultJSON.consumerLinkResponse.link;
+  Write("Link: "+x);
+    var resultstatusCode = Platform.Function.ParseJSON(Stringify(resp.statusCode));
+  
+ // Write(resultJSON);
+  Write(resultstatusCode);
+
+    return resultJSON;
+}
+  catch (err)
+  {
+  Write(Stringify(err));
+  }
+
+</script>
